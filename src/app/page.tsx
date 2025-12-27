@@ -1,95 +1,53 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+
+import React from 'react';
+import { Card, Row, Col } from 'antd';
+import { useTranslation } from 'react-i18next';
+import { useRouter } from 'next/navigation';
+import '@/i18n';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+
+interface TestCard {
+  key: string;
+  titleKey: string;
+  descriptionKey: string;
+  route: string;
+}
+
+const testCards: TestCard[] = [
+  { key: '1', titleKey: 'test1.title', descriptionKey: 'test1.description', route: '/test1' },
+  { key: '2', titleKey: 'test2.title', descriptionKey: 'test2.description', route: '/test2' },
+  { key: '3', titleKey: 'test3.title', descriptionKey: 'test3.description', route: '/test3' },
+];
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const { t } = useTranslation();
+  const router = useRouter();
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  const handleCardClick = (route: string) => {
+    router.push(route);
+  };
+
+  return (
+    <div className="page-container">
+      <LanguageSwitcher />
+
+      <div className="test-cards-container">
+        <Row gutter={[24, 24]} justify="center" align="middle">
+          {testCards.map((card) => (
+            <Col key={card.key}>
+              <Card
+                className="test-card"
+                onClick={() => handleCardClick(card.route)}
+                hoverable
+              >
+                <div className="card-title">{t(card.titleKey)}</div>
+                <div className="card-description">{t(card.descriptionKey)}</div>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </div>
     </div>
   );
 }
